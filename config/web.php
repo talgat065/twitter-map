@@ -15,6 +15,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Va5q1RdwwMXxqweKKUEEM9Z0pvQy4X3I',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -42,7 +45,13 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [],
+            'enableStrictParsing' => false,
+            'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'tweet'
+                ],
+            ],
         ],
         'view' => [
             'theme' => [
@@ -56,8 +65,8 @@ $config = [
             'clients' => [
                 'twitter' => [
                     'class' => 'dektrium\user\clients\Twitter',
-                    'consumerKey' => 'CPeycO218jDTuWPqzl8ryVbXJ',
-                    'consumerSecret' => 'sR3uAL1FTB2HREqxdi5yQag9z9WtO78Fu4h1GZ4z1m8Q5zaE2A',
+                    'consumerKey' => 'TcIaMjcTrK0w2MXR4s39bG327',
+                    'consumerSecret' => 'ZyNrWvT19FWwIzKm8BPAsVgQ73yqvrP8lpyjv1qnmM5YV1Ngfo',
                 ],
             ],
         ],

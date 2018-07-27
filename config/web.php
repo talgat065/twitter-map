@@ -1,7 +1,7 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+$params = require __DIR__.'/params.php';
+$db = require __DIR__.'/db.php';
 
 $config = [
     'id' => 'basic',
@@ -9,7 +9,7 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
@@ -18,10 +18,6 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -43,14 +39,35 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
+            'rules' => [],
+        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/views/user',
+                ],
             ],
         ],
-        */
+        'authClientCollection' => [
+            'class' => \yii\authclient\Collection::className(),
+            'clients' => [
+                'twitter' => [
+                    'class' => 'dektrium\user\clients\Twitter',
+                    'consumerKey' => 'CPeycO218jDTuWPqzl8ryVbXJ',
+                    'consumerSecret' => 'sR3uAL1FTB2HREqxdi5yQag9z9WtO78Fu4h1GZ4z1m8Q5zaE2A',
+                ],
+            ],
+        ],
+    ],
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'enableConfirmation' => false,
+            'enableUnconfirmedLogin' => true,
+        ],
     ],
     'params' => $params,
 ];

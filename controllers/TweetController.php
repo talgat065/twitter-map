@@ -10,9 +10,14 @@ class TweetController extends Controller
 {
     public $modelClass = 'app\models\Tweet';
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function actionIndex()
     {
-        $tweets = Tweet::find()->all();
+        $tweet = new Tweet();
+        $tweets = $tweet->findTweets();
 
         return $this->render('index', ['tweets' => $tweets]);
     }

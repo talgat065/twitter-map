@@ -1,5 +1,4 @@
 <?php
-echo 'asdas';
 /*
  * This file is part of the Dektrium project.
  *

@@ -50,6 +50,7 @@ $config = [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'tweet',
+                    'except' => ['get'],
                 ],
             ],
         ],

@@ -25,8 +25,8 @@ class Tweet extends ActiveRecord
      */
     public function findTweets()
     {
-        $tweets = $this->twitter->setLat('51.1801')
-            ->setLon('71.44598')
+        $tweets = $this->twitter->setLat('51.509865')
+            ->setLon('-0.118092')
             ->setRadius('10km')
             ->getTweets();
 

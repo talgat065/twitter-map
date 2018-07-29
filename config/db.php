@@ -5,7 +5,7 @@ return [
     'dsn' => 'mysql:host=localhost;dbname=twitter_map',
     'username' => 'homestead',
     'password' => 'secret',
-    'charset' => 'utf8',
+    'charset' => 'utf8mb4',
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,

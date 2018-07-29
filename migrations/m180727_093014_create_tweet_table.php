@@ -14,6 +14,7 @@ class m180727_093014_create_tweet_table extends Migration
     {
         $this->createTable('tweet', [
             'id' => $this->primaryKey(),
+            'tweet_id' => $this->integer(11)->unique()->notNull(),
             'author' => $this->string()->notNull(),
             'date' => $this->dateTime()->notNull(),
             'body' => $this->string(280)->notNull(),

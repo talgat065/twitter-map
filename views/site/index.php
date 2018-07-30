@@ -1,7 +1,13 @@
 <?php
 $this->title = 'Twitter Map';
+//$user = Yii::$app->getUser()->identity->accounts['twitter']->decodedData;
+////$user = Yii::$app->identity->user->accounts['twitter']->decodedData;
+//echo "<pre>";
+//print_r($user);
+//echo "</pre>";
 ?>
 <div class="site-index">
+    <button id="update" class="btn-default">update</button>
     <div id="map" style="width: 800px; height: 600px"></div>
     <!--    <div class="jumbotron">-->
     <!--        <h1>Congratulations!</h1>-->

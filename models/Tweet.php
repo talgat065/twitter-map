@@ -15,23 +15,34 @@ class Tweet extends ActiveRecord
         parent::__construct($config);
 
         $settings = [
-            'oauth_access_token' => "2493387068-LmLDx7jQ6AWzsXLshCGbwI1p92NuRZChrVZrLjH", 'oauth_access_token_secret' => "M6abr3iI8piCQxKIXZ9unsZAxhniVNFxSuB8ihFPpBfih", 'consumer_key' => "TcIaMjcTrK0w2MXR4s39bG327", 'consumer_secret' => "ZyNrWvT19FWwIzKm8BPAsVgQ73yqvrP8lpyjv1qnmM5YV1Ngfo",
+            'oauth_access_token' => "2493387068-LmLDx7jQ6AWzsXLshCGbwI1p92NuRZChrVZrLjH",
+            'oauth_access_token_secret' => "M6abr3iI8piCQxKIXZ9unsZAxhniVNFxSuB8ihFPpBfih",
+            'consumer_key' => "TcIaMjcTrK0w2MXR4s39bG327",
+            'consumer_secret' => "ZyNrWvT19FWwIzKm8BPAsVgQ73yqvrP8lpyjv1qnmM5YV1Ngfo",
         ];
+
         $this->twitter = new Twitter($settings);
     }
 
     /**
      * @throws \Exception
      */
-    public function findTweets()
+    public function updateTweets()
     {
-        $tweets = $this->twitter->setLat('51.509865')
-            ->setLon('-0.118092')
-            ->setRadius('10km')
+        $cityName = Yii::$app->getUser()->identity->accounts['twitter']->decodedData['location'];
+
+        $locationData = $this->twitter->geoSearch($cityName);
+
+        $lat = $locationData['result']['places'][0]['centroid'][1];
+
+        $lon = $locationData['result']['places'][0]['centroid'][0];
+
+        $tweets = $this->twitter->setLat($lat)
+            ->setLon($lon)
+            ->setRadius('1000km')
             ->getTweets();
 
         return $this->saveTweets($tweets);
-        //return $tweets;
     }
 
     private function saveTweets($tweets)
@@ -39,31 +50,28 @@ class Tweet extends ActiveRecord
         $data = [];
 
         foreach ($tweets['statuses'] as $tweet) {
-            if (isset($tweet['geo']['coordinates'])) {
-                $val['tweet_id'] = $tweet['id_str'];
 
-                $val['author'] = '@'.$tweet['user']['screen_name'];
+            $val = [
+                'tweet_id' => $tweet['id_str'],
+                'author' => '@'.$tweet['user']['screen_name'],
+                'date' => date('Y-m-d H:i:s', strtotime($tweet['created_at'])),
+                'body' => $tweet['text'],
+            ];
 
-                $val['date'] = date('Y-m-d H:i:s', strtotime($tweet['created_at']));
+            if (isset($tweet['coordinates'])) {
+                $val['lat'] = $tweet['coordinates'][0];
 
-                $val['body'] = $tweet['text'];
-
-                $val['lat'] = $tweet['geo']['coordinates'][0];
-
-                $val['lng'] = $tweet['geo']['coordinates'][1];
-
-                $data[] = $val;
+                $val['lng'] = $tweet['coordinates'][1];
             }
+
+            $data[] = $val;
         }
 
         try {
             Yii::$app->db->createCommand()
-                ->batchInsert('tweet', [
-                    'tweet_id', 'author', 'date', 'body', 'lat', 'lng',
-                ], $data)
+                ->batchInsert('tweet', ['tweet_id', 'author', 'date', 'body', 'lat', 'lng',], $data)
                 ->execute();
         } catch (Exception $e) {
-
         }
 
         return $data;

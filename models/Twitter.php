@@ -16,7 +16,7 @@ class Twitter
     public function __construct($settings)
     {
         $this->method = 'GET';
-        $this->url = 'https://api.twitter.com/1.1/search/tweets.json';
+        $this->url;
         $this->twitterApi = new TwitterAPIExchange($settings);
     }
 
@@ -76,12 +76,54 @@ class Twitter
     }
 
     /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * @throws \Exception
      */
     public function getTweets()
     {
-        $getField = "?geocode={$this->getLat()},{$this->getLon()},{$this->getRadius()}";
+        $this->setUrl('https://api.twitter.com/1.1/search/tweets.json');
 
+        $getField = "?&geocode={$this->getLat()},{$this->getLon()},{$this->getRadius()}";
+
+        return $this->execute($getField);
+    }
+
+    /**
+     * @param $place
+     * @return mixed
+     * @throws \Exception
+     */
+    public function geoSearch($place)
+    {
+        $this->setUrl('https://api.twitter.com/1.1/geo/search.json');
+
+        $getField = "?query=$place&max_results=1";
+
+        return $this->execute($getField);
+    }
+
+    /**
+     * @param $getField
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function execute($getField)
+    {
         $result = $this->twitterApi->setGetfield($getField)
             ->buildOauth($this->url, $this->method)
             ->performRequest();

@@ -26,9 +26,19 @@ class TweetController extends ActiveController
      */
     public function actionIndex()
     {
-        $tweet = new Tweet();
-        $tweets = $tweet->findTweets();
+        return $this->render('index', ['tweets' => Tweet::find()->all()]);
+    }
 
-        return $this->render('index', ['tweets' => $tweets]);
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function actionUpdate()
+    {
+        $model = new Tweet();
+
+        $model->updateTweets();
+
+        return 'success';
     }
 }

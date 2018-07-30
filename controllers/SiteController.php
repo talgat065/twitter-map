@@ -121,6 +121,10 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function actionUpdate()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -130,5 +134,16 @@ class SiteController extends Controller
         $twit->updateTweets();
 
         return 'updated';
+    }
+
+    public function actionGetUserLocation()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $tweet = new Tweet();
+
+        $cityName = Yii::$app->getUser()->identity->accounts['twitter']->decodedData['location'];
+
+        return $tweet->getGeoData($cityName);
     }
 }

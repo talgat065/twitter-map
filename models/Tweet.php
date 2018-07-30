@@ -31,11 +31,11 @@ class Tweet extends ActiveRecord
     {
         $cityName = Yii::$app->getUser()->identity->accounts['twitter']->decodedData['location'];
 
-        $locationData = $this->twitter->geoSearch($cityName);
+        $locationData = $this->getGeoData($cityName);
 
-        $lat = $locationData['result']['places'][0]['centroid'][1];
+        $lat = $locationData[1];
 
-        $lon = $locationData['result']['places'][0]['centroid'][0];
+        $lon = $locationData[0];
 
         $tweets = $this->twitter->setLat($lat)
             ->setLon($lon)
@@ -75,5 +75,17 @@ class Tweet extends ActiveRecord
         }
 
         return $data;
+    }
+
+    /**
+     * @param $cityName
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getGeoData($cityName)
+    {
+        $data = $this->twitter->geoSearch($cityName);
+
+        return $data['result']['places'][0]['centroid'];
     }
 }

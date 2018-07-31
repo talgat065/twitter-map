@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\Tweet;
 use Yii;
@@ -93,41 +92,12 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-    /**
      * @return string
      * @throws \Exception
      */
     public function actionUpdate()
     {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
         $twit = new Tweet();
 
@@ -136,9 +106,13 @@ class SiteController extends Controller
         return 'updated';
     }
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
     public function actionGetUserLocation()
     {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
         $tweet = new Tweet();
 

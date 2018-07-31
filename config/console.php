@@ -26,6 +26,15 @@ $config = [
         ],
         'db' => $db,
     ],
+    'controllerMap' => [
+        'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationPath' => [
+                '@vendor/dektrium/yii2-user/migrations',
+                '@app/migrations',
+            ],
+        ],
+    ],
     'params' => $params,
     /*
     'controllerMap' => [

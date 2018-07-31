@@ -7,6 +7,13 @@ function init() {
         zoom: 7
     });
 
+    var MyBalloonContentLayoutClass = ymaps.templateLayoutFactory.createClass(
+        '<h3>$[properties.name]:</h3>' +
+        '<p>$[properties.body]</p>' +
+        '<small>Latitude: $[properties.lat]</small>' + ' ' +
+        '<small>Longitude: $[properties.lng]</small>'
+    );
+
     getTweets();
 
     getUserLocation();
@@ -15,7 +22,6 @@ function init() {
         $.ajax({
             url: '/tweets'
         }).done(function (tweets) {
-
             $.each(tweets, function (key, val) {
                 var location = [
                     tweets[key]['lat'],
@@ -23,11 +29,14 @@ function init() {
                 ];
 
                 var content = {
-                    hintContent: tweets[key]['author'],
-                    balloonContent: tweets[key]['body']
+                    name: tweets[key]['author'],
+                    body: tweets[key]['body'],
+                    lat: tweets[key]['lat'],
+                    lng: tweets[key]['lng'],
                 };
 
-                myMap.geoObjects.add(new ymaps.Placemark(location, content));
+                myMap.geoObjects.add(new ymaps.Placemark(location,
+                    content, {balloonContentLayout: MyBalloonContentLayoutClass}));
             });
         });
     }
@@ -50,7 +59,7 @@ function init() {
             url: '/site/update'
         }).done(function (message) {
             alert(message);
-            
+
             getTweets();
         })
     });

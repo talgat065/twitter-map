@@ -39,7 +39,7 @@ class Tweet extends ActiveRecord
 
         $tweets = $this->twitter->setLat($lat)
             ->setLon($lon)
-            ->setRadius('1000km')
+            ->setRadius('50km')
             ->getTweets();
 
         return $this->saveTweets($tweets);
@@ -50,23 +50,17 @@ class Tweet extends ActiveRecord
         $data = [];
 
         foreach ($tweets['statuses'] as $tweet) {
-
             $val = [
                 'tweet_id' => $tweet['id_str'],
                 'author' => '@'.$tweet['user']['screen_name'],
                 'date' => date('Y-m-d H:i:s', strtotime($tweet['created_at'])),
                 'body' => $tweet['text'],
+                'lat' => $tweet['coordinates'][0] ?: 51.1801,
+                'lng' => $tweet['coordinates'][1] ?: 71.44598,
             ];
-
-            if (isset($tweet['coordinates'])) {
-                $val['lat'] = $tweet['coordinates'][0];
-
-                $val['lng'] = $tweet['coordinates'][1];
-            }
 
             $data[] = $val;
         }
-
         try {
             Yii::$app->db->createCommand()
                 ->batchInsert('tweet', ['tweet_id', 'author', 'date', 'body', 'lat', 'lng',], $data)

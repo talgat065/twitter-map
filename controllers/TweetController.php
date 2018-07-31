@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Tweet;
 use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
 use yii\rest\ActiveController;
-use app\models\Tweet;
 
 class TweetController extends ActiveController
 {
@@ -26,7 +26,10 @@ class TweetController extends ActiveController
      */
     public function actionIndex()
     {
-        return $this->render('index', ['tweets' => Tweet::find()->all()]);
+        return $this->render('index', [
+            'tweets' => Tweet::find()
+                ->all(),
+        ]);
     }
 
     /**

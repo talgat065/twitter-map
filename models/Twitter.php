@@ -59,6 +59,7 @@ class Twitter
 
     /**
      * @param mixed $radius
+     * @return \app\models\Twitter
      */
     public function setRadius($radius)
     {
@@ -98,7 +99,7 @@ class Twitter
     {
         $this->setUrl('https://api.twitter.com/1.1/search/tweets.json');
 
-        $getField = "?&geocode={$this->getLat()},{$this->getLon()},{$this->getRadius()}";
+        $getField = "?geocode={$this->getLat()},{$this->getLon()},{$this->getRadius()}&count=30";
 
         return $this->execute($getField);
     }

@@ -67,8 +67,8 @@ $config = [
             'clients' => [
                 'twitter' => [
                     'class' => 'dektrium\user\clients\Twitter',
-                    'consumerKey' => 'TcIaMjcTrK0w2MXR4s39bG327',
-                    'consumerSecret' => 'ZyNrWvT19FWwIzKm8BPAsVgQ73yqvrP8lpyjv1qnmM5YV1Ngfo',
+                    'consumerKey' => env('TWITTER_CONSUMER_KEY'),
+                    'consumerSecret' => env('TWITTER_CONSUMER_SECRET'),
                 ],
             ],
         ],

@@ -15,10 +15,10 @@ class Tweet extends ActiveRecord
         parent::__construct($config);
 
         $settings = [
-            'oauth_access_token' => "2493387068-LmLDx7jQ6AWzsXLshCGbwI1p92NuRZChrVZrLjH",
-            'oauth_access_token_secret' => "M6abr3iI8piCQxKIXZ9unsZAxhniVNFxSuB8ihFPpBfih",
-            'consumer_key' => "TcIaMjcTrK0w2MXR4s39bG327",
-            'consumer_secret' => "ZyNrWvT19FWwIzKm8BPAsVgQ73yqvrP8lpyjv1qnmM5YV1Ngfo",
+            'oauth_access_token' => env('TWITTER_OAUTH_ACCESS_TOKEN'),
+            'oauth_access_token_secret' => env('TWITTER_OAUTH_ACCESS_TOKEN_SECRET'),
+            'consumer_key' => env('TWITTER_CONSUMER_KEY'),
+            'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
         ];
 
         $this->twitter = new Twitter($settings);
